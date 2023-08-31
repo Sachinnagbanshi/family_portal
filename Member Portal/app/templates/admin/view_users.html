@@ -1,0 +1,22 @@
+{% extends 'admin/base.html' %}
+
+{% block title %} View Users {% endblock  %}
+
+{% block main %}
+
+
+
+    <h1>User Report</h1>
+    <br>
+    <form action="/show_data" method="post">
+    <input type="search" style="width: 15%;" class="form-control rounded" placeholder="Search phone no." aria-label="Search" aria-describedby="search-addon" />
+  <span class="input-group-text border-0" id="search-addon">
+</form>
+    <i class="fas fa-search"></i>
+  </span>
+   
+    
+    {{ df | safe }}
+
+    
+{% endblock %}

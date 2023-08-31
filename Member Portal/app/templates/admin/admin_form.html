@@ -1,0 +1,127 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}
+    form_details
+{% endblock  %}
+
+{% block main %}
+    
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(25, 28, 206, 0.1);
+    }
+
+    h3 {
+        color: #333333;
+        text-align: center;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    select,
+    button {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #dddddd;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+
+    input[type="date"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #dddddd;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #ffffff;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    hr {
+        border: 1px solid #dddddd;
+        margin: 20px 0;
+    }
+</style>
+</head>
+
+<body>
+
+    <hr>
+    <h3>Enter Your Details</h3>
+    <br>
+
+    <section>
+        <div class="container">
+            <form action="/admin_form" method="POST">
+                
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="aadhar_no">Aadhar No:</label>
+                <input type="text" id="aadhar_no" name="aadhar_no" required>
+
+                <label for="pan">PAN:</label>
+                <input type="text" id="pan" name="pan" required>
+
+                <label for="voter_id">Voter ID:</label>
+                <input type="text" id="voter_id" name="voter_id" required>
+
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" required>
+
+                <label for="pin">PIN:</label>
+                <input type="text" id="pin" name="pin" required>
+
+                <label for="state">State:</label>
+                <input type="text" id="state" name="state" required>
+
+                <label for="address_line_1">Address Line 1:</label>
+                <input type="text" id="address_line_1" name="address_line_1" required>
+
+                <label for="address_line_2">Address Line 2:</label>
+                <input type="text" id="address_line_2" name="address_line_2">
+                
+                <label for="qualification">Qualification</label>
+                <input type="text" id="qualification" name="qualification">
+
+                <label for="joining_date">Joining Date:</label>
+                <input type="date" id="joining_date" name="joining_date" required>
+
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </section>
+</div>
+</body>
+
+</html>
+
+{% endblock  %}

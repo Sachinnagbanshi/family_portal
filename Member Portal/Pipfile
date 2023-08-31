@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = {extras = ["all"], version = "*"}
+flask-sqlalchemy = "*"
+pymysql = "*"
+flask-cors = "*"
+flask-bcrypt = "*"
+bcrypt = "*"
+flask-session = "*"
+pandas = "*"
+flask-mail = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"

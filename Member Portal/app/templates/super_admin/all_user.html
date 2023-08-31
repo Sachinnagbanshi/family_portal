@@ -1,0 +1,35 @@
+{% extends 'super_admin/base2.html' %}
+
+{% block title %} All Users {% endblock  %}
+
+{% block main %}
+
+
+
+<table>
+  <thead>
+      <tr>
+          {% for column in df.columns %}
+          <th>{{ column }}</th>
+          {% endfor %}
+      </tr>
+  </thead>
+  <tbody>
+      {% for index, row in df.iterrows() %}
+      <tr>
+          {% for column in df.columns %}
+          <td>
+              {% if column == 'Sid' %}
+              <a href="{{ url_for('super_admin.all_user', id=row[column]) }}">{{ row[column] }}</a>
+              {% else %}
+              {{ row[column] }}
+              {% endif %}
+          </td>
+          {% endfor %}
+      </tr>
+      {% endfor %}
+  </tbody>
+</table>
+
+    
+{% endblock %}

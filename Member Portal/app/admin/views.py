@@ -41,17 +41,21 @@ def admin_page():
 @admin.route('/user_report')
 def user_report():
     try:
-        if session['surveyor']:
-            db_data=check_user(CreateUser,session['phone_no'])
-            scode="SURV-"+db_data['id'].split('-')[-1]
-            u_data=Registration.query.filter(Registration.surveyor_code==scode).all()
-            data=query_all(u_data,Registration)
-            columns=[str(x).replace('_',' ').title() for x in data.keys()]
-            df=pd.DataFrame(data)
-            df.sort_values(by=['phone_no'],inplace=True)
-            df.columns=columns
-            df.drop(columns=['Surveyor Name','Surveyor Code'],inplace=True)
-            return render_template('admin/view_users.html',df=df.to_html(classes='table table-striped'))
+        try:
+            if session['surveyor']:
+                db_data=check_user(CreateUser,session['phone_no'])
+                scode="SURV-"+db_data['id'].split('-')[-1]
+                u_data=Registration.query.filter(Registration.surveyor_code==scode).all()
+                data=query_all(u_data,Registration)
+                columns=[str(x).replace('_',' ').title() for x in data.keys()]
+                df=pd.DataFrame(data)
+                df.sort_values(by=['phone_no'],inplace=True)
+                df.columns=columns
+                df.drop(columns=['Surveyor Name','Surveyor Code'],inplace=True)
+                return render_template('admin/view_users.html',df=df.to_html(classes='table table-striped'))
+        except:
+            return "<h1>No Family is created.</h2>"
+
     except Exception as e:
         print(e.args)
         return redirect('/')
@@ -63,13 +67,15 @@ def create_family():
 
     try:
         if session['surveyor']:
-            if request.method=='POST':
-                try:
+            
+            try:
+                if request.method=='POST':
                     data=request.form.to_dict()
                     user_data=check_user(CreateUser,data['phone_no'])
                     id=session['id'].replace('SURV-','')
                     if id not in user_data['rid']:
                         return "<h2>You Cannot Create this User</h2>"
+                        
                     else:
                         if type(user_data)==dict:
                             scode="SURV-"+user_data['rid'].split('-')[-1]
@@ -88,10 +94,10 @@ def create_family():
                         else:
                             return "User Not Created Yet!"
 
-            
-                except Exception as e:
-                    print("User Not Created",e.args)
-                    return redirect('create_family')
+        
+            except Exception as e:
+                print("User Not Created",e.args)
+                return redirect('create_family')
 
 
 

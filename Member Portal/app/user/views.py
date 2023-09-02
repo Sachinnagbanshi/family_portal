@@ -168,7 +168,9 @@ def user_home():
 
 @user.route('/user_profile',methods=['GET','POST'])
 def user_profile():
+
     try:
+    
         if session['user']:
             db_data=Registration.query.filter(or_(Registration.rid==session['id'],Registration.uid==session['id'])).all()
             data = [orm_object_to_dict(item) for item in db_data]
@@ -186,13 +188,18 @@ def user_profile():
             member=df[df['Is Family Head']!='yes']
             head.drop(columns=['Is Family Head','Relation','Rid'],inplace=True)
             member.drop(columns=['Rid','Surveyor Name','Surveyor Code','No Of Members','Is Family Head'],inplace=True)
-            member_to_show=head['No Of Members'].astype(int).values[0]
-            member=member.head(member_to_show)
-            return render_template('user/user_profile.html',head=head.to_html(classes='table table-striped'),member=member.to_html(classes='table table-striped'))
-    except Exception as e:
-        print(e.args)
-        return "<h2>Family Not Created Yet.</h2>"
+            try:
+                
+                member_to_show=head['No Of Members'].astype(int).values[0]
+                member=member.head(member_to_show)
+                
+                return render_template('user/user_profile.html',head=head.to_html(classes='table table-striped'),member=member.to_html(classes='table table-striped'))
+            except:
+                
+                return render_template('user/user_profile.html',head=head.to_html(classes='table table-striped'))
 
+    except:
+        return redirect('/')
 
 @user.route('/create_member',methods=['GET','POST'])
 def create_member():

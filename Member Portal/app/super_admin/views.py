@@ -40,15 +40,17 @@ def super_admin_login():
 def all_admin():
     try:
         if session['super_admin']:
-            db_data=Surveyor_details.query.all()
-            data=query_all(db_data,Surveyor_details)
-            columns=[str(x).replace('_',' ').title() for x in data.keys()]
-            df=pd.DataFrame(data)
-            df.sort_values(by=['phone_no'],inplace=True)
-            df.columns=columns
-            # print(df)
-            return render_template('super_admin/all_user.html',df=df)
-
+            try:
+                db_data=Surveyor_details.query.all()
+                data=query_all(db_data,Surveyor_details)
+                columns=[str(x).replace('_',' ').title() for x in data.keys()]
+                df=pd.DataFrame(data)
+                df.sort_values(by=['phone_no'],inplace=True)
+                df.columns=columns
+                # print(df)
+                return render_template('super_admin/all_user.html',df=df)
+            except:
+                return "<h2>No Surveyor has been created yet.</h2>"
     
     except:
         return redirect('/')
@@ -58,20 +60,27 @@ def all_admin():
 def all_user(id):
     try:
         if session['super_admin']:
-            if request.method=="GET":
-                db_data=Registration.query.filter(Registration.surveyor_code==id).all()
-                data=query_all(db_data,Registration)
-                columns=[str(x).replace('_',' ').title() for x in data.keys()]
-                df=pd.DataFrame(data)
-                df.sort_values(by=['phone_no'],inplace=True)
-                df.columns=columns
-                return render_template('super_admin/all_subuser.html',df=df.to_html(classes='table table-striped'))
+            try:
+                
+                
+                if request.method=="GET":
+                    db_data=Registration.query.filter(Registration.surveyor_code==id).all()
+                    data=query_all(db_data,Registration)
+                    columns=[str(x).replace('_',' ').title() for x in data.keys()]
+                    df=pd.DataFrame(data)
+                    df.sort_values(by=['phone_no'],inplace=True)
+                    df.columns=columns
+                    return render_template('super_admin/all_subuser.html',df=df.to_html(classes='table table-striped'))
 
-        
+            
+
+
+            except:
+                return "<h2>This Surveyor have not created any user yet.</h2>"
     
-
     except:
         return redirect('/')
+
 
 
 @super_admin.route('/',methods=['GET','POST'])

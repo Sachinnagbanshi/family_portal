@@ -1,4 +1,4 @@
-from flask import Blueprint,jsonify,render_template,request,make_response,redirect,url_for,session
+from flask import Blueprint,jsonify,render_template,request,make_response,redirect,url_for,session,send_file
 from app import db
 from app.super_admin.model import CreateUser,LoginDetails
 from app.user.model import Registration
@@ -8,6 +8,8 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from app.util import *
 import pandas as pd
 from config import Config
+from io import BytesIO
+
 
 
 
@@ -64,23 +66,69 @@ def all_user(id):
                 
                 
                 if request.method=="GET":
-                    db_data=Registration.query.filter(Registration.surveyor_code==id).all()
+                    db_data=Registration.query.filter(Registration.surveyor_code==id,Registration.is_family_head=='yes').all()
                     data=query_all(db_data,Registration)
                     columns=[str(x).replace('_',' ').title() for x in data.keys()]
                     df=pd.DataFrame(data)
                     df.sort_values(by=['phone_no'],inplace=True)
                     df.columns=columns
-                    return render_template('super_admin/all_subuser.html',df=df.to_html(classes='table table-striped'))
+                    return render_template('super_admin/all_head.html',df=df)
 
             
 
 
-            except:
-                return "<h2>This Surveyor have not created any user yet.</h2>"
+            except Exception as e:
+                # print(e.args)
+                return "<h2>This Surveyor have not created any family head yet.</h2>"
     
     except:
         return redirect('/')
 
+
+@super_admin.route('/all_subuser/<string:id>',methods=['GET','POST'])
+def all_subuser(id):
+    try:
+        if session['super_admin']:
+            try:
+                
+                if request.method=="GET":
+                    db_data=Registration.query.filter(Registration.rid==id).all()
+                    data=query_all(db_data,Registration)
+                    columns=[str(x).replace('_',' ').title() for x in data.keys()]
+                    df=pd.DataFrame(data)
+                    df.sort_values(by=['phone_no'],inplace=True)
+                    df.columns=columns
+                    df.drop(columns=['Surveyor Name','No Of Members','Is Family Head'],inplace=True)
+                    return render_template('super_admin/all_subuser.html',df=df)
+
+            
+
+
+            except Exception as e:
+                print(e.args)
+                return "<h2>This Surveyor have not created any family head yet.</h2>"
+    
+    except:
+        return redirect('/')
+
+
+@super_admin.route('/download_data',methods=['GET','POST'])
+def download_data():
+    try:
+        if session['super_admin']:
+            
+            data=Surveyor_details.query.filter().all()
+            data=query_all(data,Surveyor_details)
+            columns=[str(x).replace('_',' ').title() for x in data.keys()]
+            df=pd.DataFrame(data)
+            df.columns=columns
+            excel_writer = pd.ExcelWriter(BytesIO(), engine='xlsxwriter')
+            df.to_excel(excel_writer, sheet_name='Sheet1', index=False)
+            excel_file = excel_writer.close()
+            return send_file(excel_file,as_attachment=True)
+    except Exception as e:
+        print(e.args)
+        return redirect('/')
 
 
 @super_admin.route('/',methods=['GET','POST'])

@@ -13,8 +13,10 @@ bcrypt = "*"
 flask-session = "*"
 pandas = "*"
 flask-mail = "*"
+openpyxl = "*"
+xlsxwriter = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.10"
+python_version = "3.8"

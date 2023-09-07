@@ -4,7 +4,9 @@
 
 {% block main %}
 
-<h2>Family Members Details</h2>
+<h2>Family Head Details</h2>
+<br>
+
 
 <style>
     /* Style the table */
@@ -99,7 +101,11 @@ table {
       <tr>
           {% for column in df.columns %}
           <td>
-            {{ row[column] }}
+              {% if column == 'Uid' %}
+              <a href="{{ url_for('super_admin.all_subuser', id=row[column]) }}">{{ row[column] }}</a>
+              {% else %}
+              {{ row[column] }}
+              {% endif %}
           </td>
           {% endfor %}
       </tr>

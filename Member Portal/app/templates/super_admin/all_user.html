@@ -4,7 +4,93 @@
 
 {% block main %}
 
+<h2>Surveyor Details</h2>
 
+
+
+<!-- <a href="{{ url_for('super_admin.download_data') }}">Download Excel</a> -->
+
+
+
+<style>
+    /* Style the table */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 20px;
+  border: 1px solid #ffffff;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Style the table headers */
+th {
+  background-color: #3498db;
+  color: #fff;
+  font-weight: bold;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #2980b9;
+}
+
+/* Style the table cells */
+td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Style alternate rows with a different background color */
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Hover effect for table rows */
+tbody tr:hover {
+  background-color: #e0e0e0;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Add some spacing between cells */
+td, th {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Add a subtle border around the table */
+table {
+  border: 1px solid #dcdcdc;
+}
+
+
+#searchButton {
+      padding: 5px 5px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      background-color: #3498db; /* Button background color */
+      color: #fff; /* Button text color */
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    /* Change button color on hover */
+    #searchButton:hover {
+      background-color: #2980b9; /* Hover background color */
+    }
+
+    /* Center the input and button */
+    .search-container {
+      text-align: left;
+      margin-top: 20px;
+      max-width: 400px;
+    }
+
+</style>
+
+    <input type="text" id="searchInput" placeholder="Enter Phone Number" class="search-container">
+    <button id="searchButton">Search</button>
 
 <table>
   <thead>
@@ -30,6 +116,28 @@
       {% endfor %}
   </tbody>
 </table>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const searchInput = document.getElementById("searchInput");
+      const searchButton = document.getElementById("searchButton");
+      const tableRows = document.querySelectorAll("tbody tr");
+  
+      searchButton.addEventListener("click", function () {
+        const searchTerm = searchInput.value.toLowerCase();
+  
+        tableRows.forEach(function (row) {
+          const phoneNoCell = row.querySelector("td:nth-child(4)"); // Assuming phone_no is in the second column
+          const phoneNo = phoneNoCell.textContent.toLowerCase();
+  
+          if (phoneNo.includes(searchTerm)) {
+            row.style.display = "table-row";
+          } else {
+            row.style.display = "none";
+          }
+        });
+      });
+    });
+  </script>
+  
     
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask import Blueprint,jsonify,render_template,request,make_response,redirect,url_for,session,send_file
+from flask import Blueprint,jsonify,render_template,request,make_response,redirect,url_for,session,send_file,Response
 from app import db
 from app.super_admin.model import CreateUser,LoginDetails
 from app.user.model import Registration
@@ -8,7 +8,6 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from app.util import *
 import pandas as pd
 from config import Config
-from io import BytesIO
 
 
 
@@ -112,20 +111,29 @@ def all_subuser(id):
         return redirect('/')
 
 
-@super_admin.route('/download_data',methods=['GET','POST'])
-def download_data():
+@super_admin.route('/download_data_surveyor',methods=['GET','POST'])
+def download_data_surveyor():
     try:
         if session['super_admin']:
-            
-            data=Surveyor_details.query.filter().all()
-            data=query_all(data,Surveyor_details)
-            columns=[str(x).replace('_',' ').title() for x in data.keys()]
-            df=pd.DataFrame(data)
-            df.columns=columns
-            excel_writer = pd.ExcelWriter(BytesIO(), engine='xlsxwriter')
-            df.to_excel(excel_writer, sheet_name='Sheet1', index=False)
-            excel_file = excel_writer.close()
-            return send_file(excel_file,as_attachment=True)
+            excel_buffer=download_file(Surveyor_details)
+            response = Response(excel_buffer.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            response.headers['Content-Disposition'] = 'attachment; filename=surveyor_details.xlsx'
+    
+            return response
+    except Exception as e:
+        print(e.args)
+        return redirect('/')
+
+
+@super_admin.route('/download_data_family',methods=['GET','POST'])
+def download_data_family():
+    try:
+        if session['super_admin']:
+            excel_buffer=download_file(Registration)
+            response = Response(excel_buffer.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            response.headers['Content-Disposition'] = 'attachment; filename=family_details.xlsx'
+    
+            return response
     except Exception as e:
         print(e.args)
         return redirect('/')

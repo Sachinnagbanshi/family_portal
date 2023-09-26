@@ -9,6 +9,8 @@ from app.util import *
 import pandas as pd
 from config import Config
 
+#postgres://member_portal_user:2NYQFWKRODcHVbJyCtgt530HZpZttigI@dpg-ck97gk6gtj9c73ak5jr0-a.oregon-postgres.render.com/member_portal
+
 
 
 

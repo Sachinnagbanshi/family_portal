@@ -7,7 +7,7 @@ class CreateUser(db.Model):
     __tablename__='user_master'
     id=db.Column(db.String(20),primary_key=True,nullable=False)
     rid=db.Column(db.String(20),nullable=True)
-    user_type=db.Column(db.Enum('User', 'Surveyor'), nullable=False)
+    user_type=db.Column(db.String(20), nullable=False)
     first_name=db.Column(db.String(20),nullable=False)
     last_name=db.Column(db.String(20),nullable=False)
     phone_no=db.Column(db.String(20),unique=True,nullable=False)

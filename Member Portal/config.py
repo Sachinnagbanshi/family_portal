@@ -1,4 +1,5 @@
 from datetime import timedelta
+import os
 
 class Config(object):
     SUPER_ADMIN_KEY='sachin'
@@ -11,7 +12,7 @@ class Config(object):
     SESSION_TYPE = "filesystem"
     DB_NAME='member'
     DEBUG=True
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:ams_12345@localhost/member'
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
 
 
 class Production(Config):

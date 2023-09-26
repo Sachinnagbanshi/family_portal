@@ -21,7 +21,7 @@ class Registration(db.Model):
     address_line_1 = db.Column(db.String(200), nullable=False)
     address_line_2 = db.Column(db.String(200))
     occupation = db.Column(db.String(20),nullable=False)
-    is_family_head = db.Column(db.Enum('yes', 'no'), nullable=False)
+    is_family_head = db.Column(db.String(20), nullable=False)
     no_of_members = db.Column(db.String(20))
     relation=db.Column(db.String, nullable=True, default="Head")
     surveyor_name = db.Column(db.String(100),nullable=False)
